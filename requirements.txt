@@ -1,0 +1,11 @@
+pandas
+numpy
+tensorflow
+nltk
+scikit-learn
+textblob
+yfinance
+feedparser
+beautifulsoup4
+matplotlib
+seaborn
