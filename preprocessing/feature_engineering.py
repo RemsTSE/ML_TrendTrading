@@ -2,6 +2,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import pandas as pd
 import numpy as np
 from sklearn.decomposition import PCA
+from config import Config
 
 class FeatureEngineer:
     def __init__(self, max_features=Config.MODEL_PARAMS['max_features']):
@@ -9,6 +10,9 @@ class FeatureEngineer:
         self.pca = PCA(n_components=50)
     
     def engineer_features(self, news_df, market_df):
+        # Ensure that 'published_at' in news_df is converted to datetime
+        news_df['published_at'] = pd.to_datetime(news_df['published_at'], errors='coerce')
+
         # Text features
         text_features = self.vectorizer.fit_transform(news_df['processed_text'])
         
@@ -41,8 +45,25 @@ class FeatureEngineer:
             'subjectivity': ['mean', 'std', 'min', 'max']
         })
         
+        # Flatten multi-level columns after aggregation
+        daily_features.columns = ['_'.join(col).strip() for col in daily_features.columns.values]
+        
+        # Ensure daily_features index is a datetime and tz-naive
+        daily_features.index = pd.to_datetime(daily_features.index, errors='coerce')
+        daily_features.index = daily_features.index.tz_localize(None)  # Make tz-naive
+        
         # Add technical indicators to market data
         market_features = self._add_technical_indicators(market_df)
+        
+        # Ensure market_features index is a datetime and tz-naive
+        market_features.index = pd.to_datetime(market_features.index, errors='coerce')
+        market_features.index = market_features.index.tz_localize(None)  # Make tz-naive
+
+        # Validate the indices before merging
+        if not isinstance(daily_features.index, pd.DatetimeIndex):
+            raise TypeError("daily_features index is not a valid DatetimeIndex")
+        if not isinstance(market_features.index, pd.DatetimeIndex):
+            raise TypeError("market_features index is not a valid DatetimeIndex")
         
         # Merge with market data
         merged_features = pd.merge(
@@ -81,3 +102,5 @@ class FeatureEngineer:
         df['BB_lower'] = df['BB_middle'] - 2 * df['Close'].rolling(window=20).std()
         
         return df
+
+

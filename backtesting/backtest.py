@@ -1,3 +1,5 @@
+from config import Config
+
 class Backtester:
     def __init__(self, initial_capital=Config.BACKTEST_PARAMS['initial_capital'],
                  position_size=Config.BACKTEST_PARAMS['position_size']):
