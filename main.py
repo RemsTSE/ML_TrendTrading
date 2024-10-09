@@ -1,4 +1,5 @@
 from data_collection.news_collector import NewsCollector
+from data_collection.crypto_news_collector import CryptoNewsCollector
 from data_collection.market_data_collector import MarketDataCollector
 from preprocessing.text_preprocessor import TextPreprocessor
 from preprocessing.feature_engineering import FeatureEngineer
@@ -13,6 +14,8 @@ import seaborn as sns
 import numpy as np
 
 def main():
+
+    
     # Initialize collectors
     market_collector = MarketDataCollector()
     

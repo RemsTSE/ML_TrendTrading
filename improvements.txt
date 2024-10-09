@@ -1,0 +1,36 @@
+Improvement Plan
+1. Integrate Additional News Sources for Data Collection
+Objective: Enhance data collection by adding more news sources or APIs that can provide historical data beyond the last 30 days.
+Approach:
+Research and select relevant news APIs (e.g., Alpha Vantage, Financial Modeling Prep, CoinGecko, CryptoCompare) that support historical news data and cover the Bitcoin market.
+Implement a modular design to add news collectors for different APIs with minimal changes to the existing code.
+Design a fallback mechanism to switch between APIs if one reaches its limit.
+2. Enable Market Selection for Data Collection
+Objective: Allow the user to select specific markets (e.g., Stock, Forex, Crypto) and have the collectors target these markets accordingly.
+Approach:
+Define a configuration file or input method to allow the selection of markets.
+Implement dynamic news and market data collection based on the selected market.
+Create functions to switch between different collectors or adjust URLs/parameters according to the chosen market.
+3. Handle Multi-Market Impact of Articles
+Objective: Consider articles that could impact multiple markets (e.g., economic policy news affecting both stock and forex).
+Approach:
+Develop a way to analyze an article’s impact on multiple markets.
+Assign weights or scores to determine how relevant a piece of news is to each market.
+Modify feature engineering to include multi-market relationships.
+Starting Point: Integrating Additional News Source for Bitcoin Market
+Step 1: Research and Select a New News API
+
+Find an API that supports historical data collection for the Bitcoin or general cryptocurrency market.
+Identify the requirements for the API key, rate limits, and data structure.
+Step 2: Create a New Collector for Bitcoin Market
+
+Develop a CryptoNewsCollector class, similar to NewsCollector, specifically for cryptocurrency news.
+Implement methods to fetch historical news data based on the selected API.
+Step 3: Integrate with Market Data
+
+Modify MarketDataCollector to include the capability to fetch Bitcoin market data from sources like CoinGecko or CryptoCompare.
+Ensure compatibility of the timeframes between market data and news data.
+Step 4: Test Integration
+
+Collect data for Bitcoin from both news and market sources.
+Visualize the collected data to confirm the correct alignment and consistency.
